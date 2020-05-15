@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "target": "ES5",
+    "lib": ["ES2015", "ES2016", "ES2017", "dom"],
+    "module": "ES2015",
+    "strict": true,
+    "alwaysStrict": true,
+    "declaration": true,
+    "importHelpers": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "moduleResolution": "node"
+  }
+}
