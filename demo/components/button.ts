@@ -1,0 +1,44 @@
+import { h, defineComponent } from 'vue';
+import { useMutations, useActions } from '../../src';
+
+export default defineComponent({
+  setup() {
+    const { add } = useMutations('shop', {
+      add: '_addProducts'
+    });
+    const { asyncAdd } = useActions('shop', {
+      asyncAdd: 'delayAddProducts'
+    });
+    return () =>
+      h(
+        'div',
+        {
+          style: {
+            marginTop: '20px'
+          }
+        },
+        [
+          h(
+            'div',
+            {
+              onClick: add,
+              style: {
+                color: '#f11'
+              }
+            },
+            '添加商品'
+          ),
+          h(
+            'div',
+            {
+              onClick: asyncAdd,
+              style: {
+                color: '#f11'
+              }
+            },
+            '异步添加商品'
+          )
+        ]
+      );
+  }
+});

@@ -1,7 +1,7 @@
 export function error(msg: string): never {
-  throw new Error(`vuex-saga: ${msg}`);
+  throw new Error(`vuex-pro: ${msg}`);
 }
 
 export function warn(msg: string) {
-  console.warn(`vuex-saga: ${msg}`);
+  console.warn(`vuex-pro: ${msg}`);
 }

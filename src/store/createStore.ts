@@ -67,16 +67,16 @@ export type Actions<
 
 export type Module<
   IState = Dictionary,
-  IGetters = Getters,
-  IMutations = Mutations,
-  IActions = Actions
+  IGetters = Getters<IState>,
+  IMutations = Mutations<IState>,
+  IActions = Actions<IState>
 > = {
   namespaced?: boolean;
-  state: IState;
-  getters: IGetters;
-  mutations: IMutations;
-  actions: IActions;
-  modules?: Record<string, Module>;
+  state?: IState;
+  getters?: IGetters;
+  mutations?: IMutations;
+  actions?: IActions;
+  modules?: Record<string, Module<any, any, any, any>>;
 };
 
 export class Store {
@@ -129,10 +129,10 @@ export class Store {
     for (key in module) {
       switch (key) {
         case 'state':
-          this.genState(module['state'], name);
+          this.genState(module['state'] || {}, name);
           break;
         case 'getters':
-          this.genGetters(module['getters'], name);
+          this.genGetters(module['getters'] || {}, name);
           break;
         case 'mutations':
           this.genMutations(module['mutations'], name);
@@ -165,6 +165,7 @@ export class Store {
       for (let i = 0; i < nameLen; i++) {
         const v = name[i];
         if (i === nameLen - 1) {
+          state = reactive(state);
           cur[v] = {
             ...(cur[v] || {}),
             ...state

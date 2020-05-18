@@ -1,16 +1,12 @@
 import { Dictionary, error, warn, isObject, isArray } from 'src/utils';
-import { computed, inject, reactive, UnwrapRef, ComputedRef } from 'vue';
+import { computed, inject, reactive, ComputedRef } from 'vue';
 import { StoreKey, Store } from './createStore';
 
-type ObjectStates = {
-  [x: string]: string | ((state: Dictionary) => any);
-};
-
-function getStore() {
+export function useStore() {
   const store = inject<Store>(StoreKey);
   if (!store) {
     return error(
-      `you should createStore and install it before use useState, or you need use useState in setup or functional component`
+      `you should createStore and install it before use it, or you need use hooks or store in setup or functional component`
     );
   }
   return store;
@@ -52,7 +48,7 @@ function genValue(
       }
     }
   }
-  const obj: Dictionary = {};
+  const obj = Object.create(null);
   if (isArray(value)) {
     for (const item of value) {
       mid(type, obj, store, namespaced, item, item);
@@ -66,22 +62,27 @@ function genValue(
   return obj;
 }
 
-function useState<States = string[]>(states: States): any;
+function useState<States = Dictionary>(states: string[]): States;
 function useState<States = Dictionary>(
-  states: ObjectStates
-): UnwrapRef<States> | never;
+  namespaced: string,
+  states: string[]
+): States;
 function useState<States = Dictionary>(
-  namespaced?: string,
-  states?: string[]
-): UnwrapRef<States> | never;
+  states: {
+    [x in keyof States]: string;
+  }
+): {
+  [x in keyof States]: States[x] extends object ? States[x] : any;
+};
 function useState<States = Dictionary>(
-  namespaced?: string,
-  states?: ObjectStates
-): UnwrapRef<States> | never;
-function useState<States = Dictionary>(
-  namespaced?: unknown,
-  states?: unknown
-): UnwrapRef<States> | never {
+  namespaced: string,
+  states: {
+    [x in keyof States]: string;
+  }
+): {
+  [x in keyof States]: States[x] extends object ? States[x] : any;
+};
+function useState(namespaced?: unknown, states?: unknown) {
   function genState(
     obj: Dictionary,
     store: Store,
@@ -95,12 +96,18 @@ function useState<States = Dictionary>(
     }
     let res: ComputedRef;
     if (typeof stateValue === 'string') {
+      let curValue: string = stateValue;
+      if (stateValue.includes('/')) {
+        const valueArr = stateValue.split('/');
+        curValue = valueArr.pop()!;
+        namespacedArr.push(...valueArr);
+      }
       res = computed(() => {
         const cur = store.getNamespacedValue(store.state, namespacedArr);
         if (!cur) {
           return undefined;
         }
-        return cur[stateValue];
+        return cur[curValue];
       });
     } else if (typeof stateValue === 'function') {
       const cur = store.getNamespacedValue(store.state, namespacedArr);
@@ -123,8 +130,8 @@ function useState<States = Dictionary>(
     return obj;
   }
 
-  const store = getStore();
-  const obj: States = Object.create(null);
+  const store = useStore();
+  const obj = Object.create(null);
   // not has namespaced
   if (!states) {
     states = namespaced;
@@ -140,42 +147,63 @@ function useState<States = Dictionary>(
       genState(obj, store, namespaced, key, state);
     }
   }
-  return reactive(obj as any);
+  return reactive(obj);
 }
 
-function useGetters<Getters = Dictionary>(
-  getters: string[]
-): UnwrapRef<Getters>;
+function useGetters<Getters = Dictionary>(getters: string[]): Getters;
 function useGetters<Getters = Dictionary>(
   namespaced: string,
   getters: string[]
-): UnwrapRef<Getters>;
-function useGetters<Getters = Dictionary>(
-  getters: Dictionary
-): UnwrapRef<Getters>;
+): Getters;
+function useGetters<Getters>(
+  getters: Getters
+): {
+  [x in keyof Getters]: any;
+};
 function useGetters<Getters = Dictionary>(
   namespaced: string,
-  getters: Dictionary
-): UnwrapRef<Getters>;
-function useGetters<Getters = Dictionary>(
-  namespaced?: unknown,
-  getters?: unknown
-): UnwrapRef<Getters> {
-  const store = getStore();
+  getters: Getters
+): {
+  [x in keyof Getters]: any;
+};
+function useGetters(namespaced?: unknown, getters?: unknown) {
+  const store = useStore();
   if (!getters) {
     getters = namespaced;
     namespaced = undefined;
   }
   const obj = genValue(getters, 'getters', store, namespaced);
-  return reactive(obj as any);
+  return reactive(obj);
 }
 
-function useMutations(mutations: string[]): Dictionary;
-function useMutations(namespaced: string, mutations: string[]): Dictionary;
-function useMutations(mutations: Dictionary): Dictionary;
-function useMutations(namespaced: string, mutations: Dictionary): Dictionary;
-function useMutations(namespaced?: unknown, mutations?: unknown): Dictionary {
-  const store = getStore();
+function useMutations<Mutations = Dictionary<Function>>(
+  mutations: string[]
+): Mutations;
+function useMutations<Mutations = Dictionary<Function>>(
+  namespaced: string,
+  mutations: string[]
+): Mutations;
+function useMutations<Mutations = Dictionary>(
+  mutations: {
+    [x in keyof Mutations]: string;
+  }
+): {
+  [x in keyof Mutations]: Mutations[x] extends Function
+    ? Mutations[x]
+    : Function;
+};
+function useMutations<Mutations = Dictionary>(
+  namespaced: string,
+  mutations: {
+    [x in keyof Mutations]: string;
+  }
+): {
+  [x in keyof Mutations]: Mutations[x] extends Function
+    ? Mutations[x]
+    : Function;
+};
+function useMutations(namespaced?: unknown, mutations?: unknown) {
+  const store = useStore();
   // not has namespaced
   if (!mutations) {
     mutations = namespaced;
@@ -185,12 +213,28 @@ function useMutations(namespaced?: unknown, mutations?: unknown): Dictionary {
   return obj;
 }
 
-function useActions(actions: string[]): Dictionary;
-function useActions(namespaced: string, actions: string[]): Dictionary;
-function useActions(actions: Dictionary): Dictionary;
-function useActions(namespaced: string, actions: Dictionary): Dictionary;
+function useActions<Actions = Dictionary<Function>>(actions: string[]): Actions;
+function useActions<Actions = Dictionary<Function>>(
+  namespaced: string,
+  actions: string[]
+): Actions;
+function useActions<Actions = Dictionary>(
+  actions: {
+    [x in keyof Actions]: string;
+  }
+): {
+  [x in keyof Actions]: Actions[x] extends Function ? Actions[x] : Function;
+};
+function useActions<Actions = Dictionary>(
+  namespaced: string,
+  actions: {
+    [x in keyof Actions]: string;
+  }
+): {
+  [x in keyof Actions]: Actions[x] extends Function ? Actions[x] : Function;
+};
 function useActions(namespaced?: unknown, actions?: unknown): Dictionary {
-  const store = getStore();
+  const store = useStore();
   // not has namespaced
   if (!actions) {
     actions = namespaced;
