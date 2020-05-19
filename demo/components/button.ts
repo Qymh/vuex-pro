@@ -21,7 +21,7 @@ export default defineComponent({
           h(
             'div',
             {
-              onClick: add,
+              onClick: () => add('mutation'),
               style: {
                 color: '#f11'
               }
@@ -31,7 +31,7 @@ export default defineComponent({
           h(
             'div',
             {
-              onClick: asyncAdd,
+              onClick: () => asyncAdd('action'),
               style: {
                 color: '#f11'
               }

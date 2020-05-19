@@ -7,6 +7,11 @@ export interface Payload extends Dictionary {
 
 export const StoreKey = Symbol ? Symbol('store') : 'store';
 
+type subscribeHandler<State = Dictionary> = (
+  methods: { type: string; payload: any },
+  state: State
+) => void;
+
 export type GettersCb<
   IState = Dictionary,
   IGetters = Dictionary,
@@ -94,6 +99,10 @@ export class Store {
   private mutations: Mutations;
   // actions
   private actions: Actions;
+  // subscribes
+  private subscribes: subscribeHandler[];
+  // subscribesAction
+  private subscribesAction: subscribeHandler[];
 
   constructor(module: Module) {
     this.state = {};
@@ -103,6 +112,8 @@ export class Store {
     this.rootGetters = {};
     this.mutations = {};
     this.actions = {};
+    this.subscribes = [];
+    this.subscribesAction = [];
     this.travers(module);
   }
 
@@ -258,11 +269,11 @@ export class Store {
     }
     function dispatch(this: Store, name: string[]) {
       return (type: string, payload: any) => {
-        this.dispatch(name.join('/') + `/${type}`, payload);
+        return this.dispatch(name.join('/') + `/${type}`, payload);
       };
     }
     for (const key in actions) {
-      const action = actions[key];
+      let action = actions[key];
       if (!nameLen) {
         this.actions[key] = action.bind(null, {
           state: this.state,
@@ -306,6 +317,9 @@ export class Store {
         );
       }
       (this.mutations[type] as any)(payload);
+      this.subscribes.forEach((v) => {
+        v.call(null, { type, payload }, this.state);
+      });
     } else {
       if (__DEV__) {
         warn(`mutation ${type} is not found`);
@@ -320,12 +334,26 @@ export class Store {
           `action ${type} should be a function, but now get ${typeof type}`
         );
       }
-      (this.actions[type] as any)(payload);
+      const res = (this.actions[type] as any)(payload);
+      this.subscribesAction.forEach((v) => {
+        v.call(null, { type, payload }, this.state);
+      });
+      return new Promise((resolve) => {
+        resolve(res);
+      });
     } else {
       if (__DEV__) {
         warn(`action ${type} is not found`);
       }
     }
+  }
+
+  public subscribe(handler: subscribeHandler) {
+    this.subscribes.push(handler);
+  }
+
+  public subscribeAction(handler: subscribeHandler) {
+    this.subscribesAction.push(handler);
   }
 
   public getState() {
@@ -337,6 +365,6 @@ export class Store {
   }
 }
 
-export function createStore(module: any) {
-  return new Store(module as Module);
+export function createStore(module: Module) {
+  return new Store(module);
 }

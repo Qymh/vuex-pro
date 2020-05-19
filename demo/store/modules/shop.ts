@@ -44,7 +44,7 @@ const Index: Module<ShopState> = {
           clearTimeout(timer);
         }, 1000);
       });
-      commit('_addProducts');
+      commit('_addProducts', 'inner mutation');
     }
   }
 };

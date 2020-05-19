@@ -11,3 +11,7 @@ export function isObject(val: any): val is Dictionary {
 export function isArray<T = string>(val: any): val is Array<T> {
   return Array.isArray(val);
 }
+
+export function isPromise(val: any): val is Promise<any> {
+  return val && typeof val.then === 'function';
+}

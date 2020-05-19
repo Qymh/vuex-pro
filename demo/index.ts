@@ -12,6 +12,14 @@ const app = createApp({
   }
 });
 
+store.subscribe((methods, state) => {
+  console.log(methods, state);
+});
+
+store.subscribeAction((methods, state) => {
+  console.log(methods, state);
+});
+
 app.use(store);
 
 app.mount('#app');

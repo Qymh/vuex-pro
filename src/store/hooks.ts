@@ -34,7 +34,8 @@ function genValue(
       );
     } else {
       const naming = namespaced ? `${namespaced}/${value}` : value;
-      if (!store[type][naming]) {
+      const actionValue = store[type][naming];
+      if (!actionValue) {
         warn(
           `${type} ${value} is not found ${
             namespaced ? `in namespaced ${namespaced}` : ''
@@ -42,7 +43,15 @@ function genValue(
         );
       } else {
         Object.defineProperty(obj, key, {
-          get: () => store[type][naming],
+          get: () => {
+            if (type === 'getters') {
+              return actionValue;
+            } else if (type === 'mutations') {
+              return (payload: any) => store.commit(naming, payload);
+            } else if (type === 'actions') {
+              return (payload: any) => store.dispatch(naming, payload);
+            }
+          },
           enumerable: true
         });
       }
