@@ -12,6 +12,8 @@ const app = createApp({
   }
 });
 
+app.use(store);
+
 store.subscribe((methods, state) => {
   console.log(methods, state);
 });
@@ -19,7 +21,5 @@ store.subscribe((methods, state) => {
 store.subscribeAction((methods, state) => {
   console.log(methods, state);
 });
-
-app.use(store);
 
 app.mount('#app');

@@ -1,5 +1,4 @@
-import { Module } from '../../../src';
-import { reactive } from 'vue';
+import { Module } from 'vuex-pro';
 
 export type ShopState = {
   products: {

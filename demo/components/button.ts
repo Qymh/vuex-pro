@@ -1,5 +1,5 @@
 import { h, defineComponent } from 'vue';
-import { useMutations, useActions } from '../../src';
+import { useMutations, useActions } from 'vuex-pro';
 
 export default defineComponent({
   setup() {

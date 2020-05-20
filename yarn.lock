@@ -2896,10 +2896,10 @@ vue@^3.0.0-beta.12:
     "@vue/runtime-dom" "3.0.0-beta.14"
     "@vue/shared" "3.0.0-beta.14"
 
-vuex-pro@^0.1.0-beta.1:
-  version "0.1.0-beta.1"
-  resolved "https://registry.yarnpkg.com/vuex-pro/-/vuex-pro-0.1.0-beta.1.tgz#00981d5c5ec1846921ce770767c5249b3205b85b"
-  integrity sha512-RvX0e02gyCcsPwgSWV3KVar9bnHb+NfEHz4hsP/hXjcwZwziqUg8KRiAhZnneD8YFqkP/SDvdRHios8/o01VrA==
+vuex-pro@^0.1.0-beta.2:
+  version "0.1.0-beta.2"
+  resolved "https://registry.yarnpkg.com/vuex-pro/-/vuex-pro-0.1.0-beta.2.tgz#ef9910e5baf220be21e5c80fea610bcd99ecdf17"
+  integrity sha512-Gu6MpevBcjSR3Ing5NkDll31zRuu4GCkfeP9kWB616H3kEeoiNwHKVnVtfuUvOXPLGj6M9aDBiHS0bcy3s+tvw==
 
 wcwidth@^1.0.1:
   version "1.0.1"

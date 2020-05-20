@@ -1,5 +1,5 @@
 import { h, defineComponent } from 'vue';
-import { useState, useGetters } from '../../src';
+import { useState, useGetters } from 'vuex-pro';
 import { ShopState } from '../store/modules/shop';
 
 export default defineComponent({

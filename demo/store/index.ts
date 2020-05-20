@@ -1,5 +1,5 @@
 import shop from './modules/shop';
-import { Module } from '../../src';
+import { Module } from 'vuex-pro';
 
 const Index: Module = {
   modules: {
