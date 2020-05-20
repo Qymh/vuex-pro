@@ -1,5 +1,5 @@
 import { createApp, h } from 'vue';
-import { createStore } from '../src';
+import { createStore } from 'vuex-pro';
 import modules from './store';
 import shop from './components/shop';
 import button from './components/button';
