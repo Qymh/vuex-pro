@@ -492,23 +492,21 @@ app.mount('#app');
 
 #### namespaced
 
-是否启用命名空间
+#### state
 
-#### state 状态管理的值
+#### getters(state,getters,rootState?,rootGetters?)
 
-#### getters(state,getters,rootState?,rootGetters?) 状态管理的复杂返回值
+if module is at top it only has`state` and `getters`
 
-如果在根部函数参数只有`state`和`getters`
+#### mutations(state,payload)
 
-#### mutations(state,payload) 突变事件
-
-#### actions({state,getters,commit,dispatch,rootState,rootGetters},payload) 事件
+#### actions({state,getters,commit,dispatch,rootState,rootGetters},payload)
 
 ### useState(namespaced?,states)
 
-**此方法只能用在`setup`中**
+**it can only use in `setup`**
 
-第一个参数为整体采用的命名空间的名字,可以没有直接将`states`作为第一个参数
+if it doesn't have namespaced states can be the first argument
 
 ```js
 import { useState } from 'vuex-pro';
@@ -532,9 +530,9 @@ const state4 = useState({
 
 ### useGetters(namespaced?,getters)
 
-**此方法只能用在`setup`中**
+**it can only use in `setup`**
 
-第一个参数为整体采用的命名空间的名字,可以没有直接将`getters`作为第一个参数
+if it doesn't have namespaced getters can be the first argument
 
 ```js
 import { useGetters } from 'vuex-pro';
@@ -552,9 +550,9 @@ const getters3 = useGetters('inner', {
 
 ### useMutations(namespaced?,mutations)
 
-**此方法只能用在`setup`中**
+**it can only use in `setup`**
 
-第一个参数为整体采用的命名空间的名字,可以没有直接将`getters`作为第一个参数
+if it doesn't have namespaced mutations can be the first argument
 
 ```js
 import { useMutations } from 'vuex-pro';
@@ -572,9 +570,9 @@ const mutations3 = useMutations('inner', {
 
 ### useActions(namespaced?,actions)
 
-**此方法只能用在`setup`中**
+**it can only use in `setup`**
 
-第一个参数为整体采用的命名空间的名字,可以没有直接将`getters`作为第一个参数
+if it doesn't have namespaced actions can be the first argument
 
 ```js
 import { useActions } from 'vuex-pro';
@@ -592,27 +590,27 @@ const actions3 = useActions('inner', {
 
 ### store 实例方法
 
-#### store.commit(type,payload) 触发 mutations
+#### store.commit(type,payload) trigger mutations
 
-#### store.dispatch(type,payload) 触发 actions
+#### store.dispatch(type,payload) trigger actions
 
-#### store.getState() 获取 根 state
+#### store.getState() get rootstate
 
-#### store.subscribe(handler) 触发 mutations 之前触发的订阅函数
+#### store.subscribe(handler) functions before trigger mutations
 
-handler 是一个函数 ({type,payload},state)
+handler is a function ({type,payload},state)
 
-type 当前 mutation 的 type
-payload 当前 mutation 的 payload
-state 根 state
+type
+payload
+state
 
-#### store.subscribeAction(handler) 触发 mutations 之前触发的订阅函数
+#### store.subscribeAction(handler) functions before trigger actions
 
-handler 是一个函数 ({type,payload},state)
+handler is a function ({type,payload},state)
 
-type 当前 mutation 的 type
-payload 当前 mutation 的 payload
-state 根 state
+type
+payload
+state
 
 #### registerModule
 
