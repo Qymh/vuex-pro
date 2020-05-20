@@ -81,7 +81,7 @@ export type Module<
   getters?: IGetters;
   mutations?: IMutations;
   actions?: IActions;
-  modules?: Record<string, Module<any, any, any, any>>;
+  modules?: Record<string, Module<Dictionary, Getters, Mutations, Actions>>;
 };
 
 export class Store {
@@ -216,17 +216,23 @@ export class Store {
       }
       if (!nameLen) {
         callGetter.call(this, key, getter, name);
+        if (this.getters[key]) {
+          warn(`has mutiple ${key} getters`);
+          delete this.getters[key];
+        }
         Object.defineProperty(this.getters, key, {
           get: () => {
             return this._proxyGetters[key]();
           },
-          enumerable: true
+          enumerable: true,
+          configurable: true
         });
         Object.defineProperty(this.rootGetters, key, {
           get: () => {
             return this._proxyGetters[key]();
           },
-          enumerable: true
+          enumerable: true,
+          configurable: true
         });
       } else {
         const naming = name.join('/') + `/${key}`;
@@ -246,6 +252,10 @@ export class Store {
     for (const key in mutations) {
       const mutation = mutations[key];
       if (!nameLen) {
+        if (this.mutations[key]) {
+          warn(`has multiple ${key} mutations`);
+          delete this.mutations[key];
+        }
         this.mutations[key] = mutation.bind(
           null,
           this.getNamespacedValue(this.state, name)
