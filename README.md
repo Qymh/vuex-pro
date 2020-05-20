@@ -9,7 +9,7 @@ vue state management `typescript` supported for `vue-next`
 ### Install
 
 ```bash
-yarn add vuex-pro
+yarn add vuex-pro@beta
 ```
 
 ofcourse you need install `vue3` or `vue-next` before
