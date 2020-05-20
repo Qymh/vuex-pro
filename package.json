@@ -2,7 +2,7 @@
   "name": "vuex-pro",
   "version": "0.1.0-beta.2",
   "license": "MIT",
-  "main": "./dist/vue-pro-esm.js",
+  "main": "./dist/vuex-pro-esm.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "check": "yarn upgrade-interactive",
