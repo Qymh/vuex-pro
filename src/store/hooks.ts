@@ -1,4 +1,4 @@
-import { Dictionary, error, warn, isObject, isArray } from 'src/utils';
+import { Dictionary, error, warn, isObject, isArray } from '../utils';
 import { computed, inject, reactive, ComputedRef } from 'vue';
 import { StoreKey, Store } from './createStore';
 

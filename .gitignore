@@ -10,6 +10,8 @@ lerna-debug.log
 yarn-debug.log*
 yarn-error.log*
 
+coverage
+
 .idea
 .vscode
 *.suo

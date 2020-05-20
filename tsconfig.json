@@ -11,6 +11,7 @@
     "importHelpers": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "esModuleInterop": true
   }
 }

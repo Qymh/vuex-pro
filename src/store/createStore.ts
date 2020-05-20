@@ -1,4 +1,4 @@
-import { Dictionary, error, warn } from 'src/utils/index';
+import { Dictionary, error, warn } from '../utils';
 import { reactive, computed, App } from 'vue';
 
 export interface Payload extends Dictionary {
