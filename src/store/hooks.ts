@@ -78,7 +78,7 @@ function useState<States = Dictionary>(
 ): States;
 function useState<States = Dictionary>(
   states: {
-    [x in keyof States]: string;
+    [x in keyof States]: string | ((state: Dictionary) => any);
   }
 ): {
   [x in keyof States]: States[x] extends object ? States[x] : any;
@@ -86,7 +86,7 @@ function useState<States = Dictionary>(
 function useState<States = Dictionary>(
   namespaced: string,
   states: {
-    [x in keyof States]: string;
+    [x in keyof States]: string | ((state: Dictionary) => any);
   }
 ): {
   [x in keyof States]: States[x] extends object ? States[x] : any;
@@ -113,9 +113,6 @@ function useState(namespaced?: unknown, states?: unknown) {
       }
       res = computed(() => {
         const cur = store.getNamespacedValue(store.state, namespacedArr);
-        if (!cur) {
-          return undefined;
-        }
         return cur[curValue];
       });
     } else if (typeof stateValue === 'function') {

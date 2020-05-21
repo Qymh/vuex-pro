@@ -68,7 +68,7 @@ export type Actions<
   IGetters = Dictionary,
   IRootState = Dictionary,
   IRootGetters = Dictionary
-> = Record<string, ActionsCb<IState, IGetters, {}, IRootState, IRootGetters>>;
+> = Record<string, ActionsCb<IState, IGetters, any, IRootState, IRootGetters>>;
 
 export type Module<
   IState = Dictionary,
@@ -117,7 +117,7 @@ export class Store {
     this.travers(module);
   }
 
-  public getNamespacedValue(value: Dictionary, name: string[]): Dictionary {
+  public getNamespacedValue(value: Dictionary, name: string[]) {
     let cur = value;
     const nameLen = name.length;
     if (!nameLen) {
@@ -131,7 +131,6 @@ export class Store {
           cur = cur[v] || {};
         }
       }
-      return {};
     }
   }
 
@@ -251,6 +250,11 @@ export class Store {
     const nameLen = name.length;
     for (const key in mutations) {
       const mutation = mutations[key];
+      if (typeof mutation !== 'function') {
+        error(
+          `mutation ${key} should be a function, but now get ${typeof mutation}`
+        );
+      }
       if (!nameLen) {
         if (this.mutations[key]) {
           warn(`has multiple ${key} mutations`);
@@ -284,6 +288,11 @@ export class Store {
     }
     for (const key in actions) {
       let action = actions[key];
+      if (typeof action !== 'function') {
+        error(
+          `mutation ${key} should be a function, but now get ${typeof action}`
+        );
+      }
       if (!nameLen) {
         this.actions[key] = action.bind(null, {
           state: this.state,
@@ -321,11 +330,6 @@ export class Store {
 
   public commit(type: string, payload?: any) {
     if (this.mutations[type]) {
-      if (typeof this.mutations[type] !== 'function') {
-        error(
-          `mutation ${type} should be a function, but now get ${typeof type}`
-        );
-      }
       (this.mutations[type] as any)(payload);
       this.subscribes.forEach((v) => {
         v.call(null, { type, payload }, this.state);
@@ -339,11 +343,6 @@ export class Store {
 
   public dispatch(type: string, payload?: any) {
     if (this.actions[type]) {
-      if (typeof this.actions[type] !== 'function') {
-        error(
-          `action ${type} should be a function, but now get ${typeof type}`
-        );
-      }
       const res = (this.actions[type] as any)(payload);
       this.subscribesAction.forEach((v) => {
         v.call(null, { type, payload }, this.state);
