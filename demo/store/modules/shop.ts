@@ -1,4 +1,5 @@
 import { Module } from '../../../src';
+import { Dictionary } from 'src/utils';
 
 export type ShopState = {
   products: {
@@ -9,6 +10,12 @@ export type ShopState = {
 };
 
 let id = 0;
+
+type q<T> = {
+  a: T;
+};
+
+type t = q<ShopState> extends q<Dictionary> ? any : string;
 
 const Index: Module<ShopState> = {
   namespaced: true,
