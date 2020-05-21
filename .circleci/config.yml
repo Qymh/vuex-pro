@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.15.1
+    working_directory: ~/app
+    steps:
+      - checkout
+      - restore_cache:
+          key: vuex-pro-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run: yarn
+      - save_cache:
+          paths:
+            - node_module
+          key: vuex-pro-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run: npm run test:ci
