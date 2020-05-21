@@ -1,3 +1,7 @@
+![](https://img.shields.io/circleci/build/github/Qymh/vuex-pro)
+![](https://img.shields.io/npm/v/vuex-pro/beta)
+![](https://img.shields.io/codecov/c/github/qymh/vuex-pro)
+
 # vuex-pro
 
 vue state management `typescript` supported for `vue-next`
