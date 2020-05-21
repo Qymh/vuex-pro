@@ -6,7 +6,7 @@
 
 vue state management `typescript` supported for `vue-next`
 
-**Only supported `vue3` or `vue-next`**
+**Only supported `vue-next`**
 
 ## Usage
 
@@ -16,13 +16,13 @@ vue state management `typescript` supported for `vue-next`
 yarn add vuex-pro@beta
 ```
 
-ofcourse you need install `vue3` or `vue-next` before
+ofcourse you need install `vue-next` before
 
 ### createStore
 
 create a state management
 
-```javascript
+```js
 import { createApp, h } from 'vue';
 import { createStore } from 'vuex-pro';
 
@@ -43,7 +43,7 @@ app.mount('#app');
 
 - define
 
-```javascript
+```js
 const store = createStore({
   state: {
     test: 1
@@ -61,7 +61,7 @@ store.getState().test; // 1
 
 - setup
 
-```javascript
+```js
 import { createApp, h } from 'vue';
 import { createStore, useState } from 'vuex-pro';
 
@@ -83,16 +83,27 @@ app.mount('#app');
 
 ❌ **WRONG**
 
-The above example you can only get `test` by state.test so that it can trigger reactive refresh
+If `state.test` is a basic type which is `string` `number` `boolean` `undefined` `null` and so on
+
+You can only use it by `state.test` and can not use it by deconstructing
 
 the following is wrong
 
 ```js
+// ❌
 const { test } = useState(['test']);
 return () => h('div', test);
 ```
 
 dom will not refresh when test changes
+
+but if `state.test` is an object it can work
+
+```js
+// ✅
+const { test } = useState(['test']);
+return () => h('div', test.a);
+```
 
 ### getters
 
@@ -146,16 +157,27 @@ app.mount('#app');
 
 ❌ **WRONG**
 
-The above example you can only get `foo` by getters.foo so that it can trigger reactive refresh
+If `getters.foo` is a basic type which is `string` `number` `boolean` `undefined` `null` and so on
+
+You can only use it by `getters.foo` and can not use it by deconstructing
 
 the following is wrong
 
 ```js
+// ❌
 const { foo } = useGetters(['foo']);
 return () => h('div', foo);
 ```
 
-dom will not refresh when getter foo changes
+dom will not refresh when test changes
+
+but if `getters.foo` is an object it can work
+
+```js
+// ✅
+const { foo } = useGetters(['foo']);
+return () => h('div', foo.a);
+```
 
 ### Mutations
 
@@ -487,24 +509,17 @@ app.mount('#app');
 
 ### createStore(modules)
 
-- modules
-  - namespaced
-  - state
-  - getters
-  - mutations
-  - actions
+#### modules
 
-#### namespaced
+- state
 
-#### state
+- getters(state,getters,rootState?,rootGetters?)
 
-#### getters(state,getters,rootState?,rootGetters?)
+if module is at top it only has `state` and `getters`
 
-if module is at top it only has`state` and `getters`
+- mutations(state,payload)
 
-#### mutations(state,payload)
-
-#### actions({state,getters,commit,dispatch,rootState,rootGetters},payload)
+- actions({state,getters,commit,dispatch,rootState,rootGetters},payload)
 
 ### useState(namespaced?,states)
 
@@ -594,36 +609,46 @@ const actions3 = useActions('inner', {
 
 ### store instance
 
-#### store.commit(type,payload) trigger mutations
+- store.commit(type,payload)
 
-#### store.dispatch(type,payload) trigger actions
+trigger mutations
 
-#### store.getState() get rootstate
+- store.dispatch(type,payload)
 
-#### store.subscribe(handler) functions before trigger mutations
+trigger actions
 
-handler is a function ({type,payload},state)
+- store.getState()
 
-type
-payload
-state
+get rootstate
 
-#### store.subscribeAction(handler) functions before trigger actions
+- store.subscribe(handler)
 
-handler is a function ({type,payload},state)
+functions before trigger mutations
 
-type
-payload
-state
+handler is a function
 
-#### registerModule
+```js
+store.subscribe(({ type, payload }, state) => {});
+```
+
+- store.subscribeAction(handler)
+
+functions before trigger actions
+
+handler is a function
+
+```js
+store.subscribe(({ type, payload }, state) => {});
+```
+
+- registerModule
 
 Todo
 
-#### unregisterModule
+- unregisterModule
 
 Todo
 
-### hasModule
+- hasModule
 
 Todo
