@@ -78,7 +78,7 @@ function useState<States = Dictionary>(
 ): States;
 function useState<States = Dictionary>(
   states: {
-    [x in keyof States]: string | ((state: Dictionary) => any);
+    [x in keyof States]?: string | ((state: Dictionary) => any);
   }
 ): {
   [x in keyof States]: States[x] extends object ? States[x] : any;
@@ -86,7 +86,7 @@ function useState<States = Dictionary>(
 function useState<States = Dictionary>(
   namespaced: string,
   states: {
-    [x in keyof States]: string | ((state: Dictionary) => any);
+    [x in keyof States]?: string | ((state: Dictionary) => any);
   }
 ): {
   [x in keyof States]: States[x] extends object ? States[x] : any;
@@ -161,16 +161,20 @@ function useGetters<Getters = Dictionary>(
   namespaced: string,
   getters: string[]
 ): Getters;
-function useGetters<Getters>(
-  getters: Getters
+function useGetters<Getters = Dictionary>(
+  getters: {
+    [x in keyof Getters]: string;
+  }
 ): {
-  [x in keyof Getters]: any;
+  [x in keyof Getters]: Getters[x] extends unknown ? any : Getters[x];
 };
 function useGetters<Getters = Dictionary>(
   namespaced: string,
-  getters: Getters
+  getters: {
+    [x in keyof Getters]: string;
+  }
 ): {
-  [x in keyof Getters]: any;
+  [x in keyof Getters]: Getters[x] extends unknown ? any : Getters[x];
 };
 function useGetters(namespaced?: unknown, getters?: unknown) {
   const store = useStore();

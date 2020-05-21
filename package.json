@@ -6,6 +6,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "check": "yarn upgrade-interactive",
+    "lint": "prettier --write .",
     "dev": "rollup -c",
     "dev:demo": "rollup -wc --environment TARGET:demo",
     "build": "rimraf dist && node scripts/build.js",

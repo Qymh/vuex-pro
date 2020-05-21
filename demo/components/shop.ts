@@ -1,10 +1,10 @@
 import { h, defineComponent } from 'vue';
-import { useState, useGetters } from 'vuex-pro';
+import { useState, useGetters } from '../../src';
 import { ShopState } from '../store/modules/shop';
 
 export default defineComponent({
   setup() {
-    const state = useState<ShopState>('shop', {
+    const { products } = useState<ShopState>('shop', {
       products: 'products'
     });
     const getters = useGetters('shop', {
@@ -14,7 +14,7 @@ export default defineComponent({
       h('div', [
         h(
           'div',
-          state.products.map((v) =>
+          products.map((v) =>
             h(
               'div',
               {

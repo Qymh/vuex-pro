@@ -1,4 +1,4 @@
-import { Module } from 'vuex-pro';
+import { Module } from '../../../src';
 
 export type ShopState = {
   products: {

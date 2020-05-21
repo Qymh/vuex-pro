@@ -81,7 +81,7 @@ export type Module<
   getters?: IGetters;
   mutations?: IMutations;
   actions?: IActions;
-  modules?: Record<string, Module<Dictionary, Getters, Mutations, Actions>>;
+  modules?: Record<string, Module<Dictionary, any, any, any>>;
 };
 
 export class Store {
