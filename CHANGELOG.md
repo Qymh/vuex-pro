@@ -1,3 +1,15 @@
+# [0.1.0-beta.4](https://github.com/Qymh/vuex-pro/compare/v0.1.0-beta.3...v0.1.0-beta.4) (2020-05-21)
+
+
+### Features
+
+* **ci:** add covecov ([7fd432f](https://github.com/Qymh/vuex-pro/commit/7fd432f3ef44639bf7760b44d2e751bb15e64d17))
+* **test:** coverage 100% ([1996ad4](https://github.com/Qymh/vuex-pro/commit/1996ad4c43ac203786de9e16d16f4ae965262386))
+* **types:** improv types ([dae9d27](https://github.com/Qymh/vuex-pro/commit/dae9d27c9fd13b2610cf258effd0fa35e39332b0))
+* **types:** improv types ([5a64b16](https://github.com/Qymh/vuex-pro/commit/5a64b16490be068bbef1e8ac0177328c32fd3edf))
+
+
+
 # [0.1.0-beta.3](https://github.com/Qymh/vuex-pro/compare/v0.1.0-beta.2...v0.1.0-beta.3) (2020-05-20)
 
 ### Features
