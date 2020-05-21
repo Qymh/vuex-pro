@@ -592,7 +592,7 @@ const actions3 = useActions('inner', {
 });
 ```
 
-### store 实例方法
+### store instance
 
 #### store.commit(type,payload) trigger mutations
 
