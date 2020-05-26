@@ -1,4 +1,11 @@
-import { Dictionary, error, warn, isObject, isArray } from '../utils';
+import {
+  Dictionary,
+  error,
+  warn,
+  isObject,
+  isArray,
+  KnownType
+} from '../utils';
 import { computed, inject, reactive, ComputedRef } from 'vue';
 import { StoreKey, Store } from './createStore';
 
@@ -81,7 +88,7 @@ function useState<States = Dictionary>(
     [x in keyof States]?: string | ((state: Dictionary) => any);
   }
 ): {
-  [x in keyof States]: States[x] extends object ? States[x] : any;
+  [x in keyof States]: States[x] extends KnownType ? States[x] : any;
 };
 function useState<States = Dictionary>(
   namespaced: string,
@@ -89,7 +96,7 @@ function useState<States = Dictionary>(
     [x in keyof States]?: string | ((state: Dictionary) => any);
   }
 ): {
-  [x in keyof States]: States[x] extends object ? States[x] : any;
+  [x in keyof States]: States[x] extends KnownType ? States[x] : any;
 };
 function useState(namespaced?: unknown, states?: unknown) {
   function genState(
@@ -166,7 +173,7 @@ function useGetters<Getters = Dictionary>(
     [x in keyof Getters]: string;
   }
 ): {
-  [x in keyof Getters]: Getters[x] extends unknown ? any : Getters[x];
+  [x in keyof Getters]: Getters[x] extends KnownType ? Getters[x] : any;
 };
 function useGetters<Getters = Dictionary>(
   namespaced: string,
@@ -174,7 +181,7 @@ function useGetters<Getters = Dictionary>(
     [x in keyof Getters]: string;
   }
 ): {
-  [x in keyof Getters]: Getters[x] extends unknown ? any : Getters[x];
+  [x in keyof Getters]: Getters[x] extends KnownType ? Getters[x] : any;
 };
 function useGetters(namespaced?: unknown, getters?: unknown) {
   const store = useStore();
