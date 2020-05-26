@@ -1,3 +1,17 @@
+# [0.1.0-beta.5](https://github.com/Qymh/vuex-pro/compare/v0.1.0-beta.4...v0.1.0-beta.5) (2020-05-26)
+
+
+### Bug Fixes
+
+* **hooks:** wrong types ([f2a4301](https://github.com/Qymh/vuex-pro/commit/f2a43016360a6d1e05db5eef343e6b252fe2e535))
+
+
+### Features
+
+* **docs:** optimize ([97094ad](https://github.com/Qymh/vuex-pro/commit/97094ad16262e1389f0948b643b8bf69b92a8e27))
+
+
+
 # [0.1.0-beta.4](https://github.com/Qymh/vuex-pro/compare/v0.1.0-beta.3...v0.1.0-beta.4) (2020-05-21)
 
 
