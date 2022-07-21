@@ -41,7 +41,7 @@
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-typescript2": "^0.27.1",
     "semver": "^7.3.2",
-    "terser": "^4.7.0",
+    "terser": "^4.8.1",
     "ts-jest": "^26.0.0",
     "tslib": "^1.11.2",
     "typescript": "^3.8.3",
